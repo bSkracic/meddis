@@ -8,9 +8,10 @@
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/fragment_edit_medication.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_edit_therapy.xml" value="0.35070349140177176" />
         <entry key="app/src/main/res/layout/fragment_medication.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/fragment_new_medication.xml" value="0.35052083333333334" />
-        <entry key="app/src/main/res/layout/list_item_medication.xml" value="0.1796875" />
+        <entry key="app/src/main/res/layout/list_item_medication.xml" value="0.33" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.33" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/menu/main.xml" value="0.35052083333333334" />

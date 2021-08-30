@@ -2,6 +2,7 @@ package hr.bskracic.meddis
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -11,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import hr.bskracic.meddis.databinding.ActivityMainBinding
 import hr.bskracic.meddis.ui.medication.EditMedicationFragment
 
@@ -28,15 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-           EditMedicationFragment.newInstance(0).show(supportFragmentManager, null)
-        }
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -49,6 +40,27 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // FAB configuration
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.nav_medication -> {
+                    fab.visibility = View.VISIBLE
+                    fab.setOnClickListener {
+                        openEditMedication()
+                    }
+                }
+                R.id.nav_therapy -> {
+                    fab.visibility = View.VISIBLE
+                    fab.setOnClickListener(null)
+                }
+                else -> {
+                    fab.visibility = View.GONE
+                }
+            }
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -60,5 +72,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun openEditMedication() {
+        EditMedicationFragment.newInstance(0).show(supportFragmentManager, null)
     }
 }

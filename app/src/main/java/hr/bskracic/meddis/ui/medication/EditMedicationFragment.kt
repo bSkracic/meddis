@@ -9,21 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.textfield.TextInputEditText
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.data.model.Medication
 
 private const val MEDICATION_ID = "MEDICATION_ID"
 
-/*
-* TODO: Should only open this from medication list, add option to remove the drug
-* */
-
 class EditMedicationFragment : DialogFragment() {
     private var medicationID: Int? = null
-    private var medication: Medication? = null
 
     private val medicationViewModel: EditMedicationViewModel by viewModels {
         EditMedicationViewModelFactory((activity?.application as MeddisApplication).repository)
@@ -48,20 +45,17 @@ class EditMedicationFragment : DialogFragment() {
         super.onStart()
         setWindowParams()
 
-        var isUpdating: Boolean = false
-
-        if (medicationID != null && medicationID != 0) {
-            isUpdating = true
-            medication = medicationViewModel.getById(medicationID!!)
-        } else {
-//            dismiss()
+        view?.findViewById<FrameLayout>(R.id.edit_medication_container)?.setOnClickListener {
+            dismiss()
         }
+        // Clumsy, but does the job
+        view?.findViewById<CardView>(R.id.edit_medication_card)?.setOnClickListener(null)
+
+        view?.findViewById<Spinner>(R.id.edit_medication_dose_unit)?.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, mutableListOf("tableta", "mg", "mL"))
 
         val maxAmount = view?.findViewById<EditText>(R.id.edit_medication_max_amount)
         val currentAmount = view?.findViewById<EditText>(R.id.edit_medication_current_amount)
 
-
-        // TODO: Does not work
         maxAmount?.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -70,35 +64,58 @@ class EditMedicationFragment : DialogFragment() {
                     event.action == KeyEvent.ACTION_DOWN &&
                     event.keyCode == KeyEvent.KEYCODE_ENTER) {
                     if (event == null || !event.isShiftPressed) {
-                        currentAmount?.setText(v?.text)
+                        currentAmount?.setText(v?.text.toString())
                         return true
                     }
                 }
                 return false
             }
-
         })
+
+        var medication: Medication? = null
+        var isUpdating = false
+
+        if (medicationID != null && medicationID != 0) {
+            isUpdating = true
+            medicationViewModel.getById(medicationID!!).observe(viewLifecycleOwner, {
+                medication = it
+                populateFields(it)
+            })
+        }
+        else if( medicationID != null && medicationID == 0) {
+            view?.findViewById<Button>(R.id.edit_medication_delete)?.visibility = View.GONE
+        }
+        else {
+            dismiss()
+        }
 
         view?.findViewById<Button>(R.id.edit_medication_save)?.setOnClickListener {
             view?.apply {
-                val medication = Medication(
+                medication = Medication(
                     medicationID!!,
-                    findViewById<EditText>(R.id.edit_medication_label).text.toString(),
-                    findViewById<EditText>(R.id.edit_medication_description).text.toString(),
-                    findViewById<EditText>(R.id.edit_medication_current_amount).text.toString().toInt(),
-                    findViewById<EditText>(R.id.edit_medication_max_amount).text.toString().toInt(),
+                    findViewById<TextInputEditText>(R.id.edit_medication_label).text.toString(),
+                    findViewById<TextInputEditText>(R.id.edit_medication_description).text.toString(),
+                    currentAmount?.text.toString().toInt(),
+                    maxAmount?.text.toString().toInt(),
                     findViewById<Spinner>(R.id.edit_medication_dose_unit).selectedItem.toString()
                     )
-                val message = validateInput(medication)
+                val message = validateInput(medication!!)
                 if(message == null) {
-                    saveChanges(medication, isUpdating)
+                    saveChanges(medication!!, isUpdating)
+                    dismiss()
                 } else {
                     findViewById<TextView>(R.id.edit_medication_warning).text = message
                 }
             }
         }
 
-        view?.findViewById<Spinner>(R.id.edit_medication_dose_unit)?.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, mutableListOf("tableta", "mg", "mL"), )
+        view?.findViewById<Button>(R.id.edit_medication_delete)?.setOnClickListener {
+            if(medication != null){
+                medicationViewModel.delete(medication!!)
+                dismiss()
+            }
+        }
+
     }
 
     private fun setWindowParams(){
@@ -110,7 +127,7 @@ class EditMedicationFragment : DialogFragment() {
     }
 
     private fun validateInput(medication: Medication): String? {
-        if(medication.label.isNullOrBlank()) {
+        if(medication.label.isBlank()) {
             return "Ime lijeka ne smije biti prazno"
         } else if(medication.maxAmount <= 0 || medication.currentAmount > medication.maxAmount) {
             return "Neispravna vrijednost količine"
@@ -123,6 +140,22 @@ class EditMedicationFragment : DialogFragment() {
             medicationViewModel.update(medication)
         } else {
             medicationViewModel.insert(medication)
+        }
+    }
+
+    private fun populateFields(medication: Medication) {
+        view?.apply {
+            findViewById<TextInputEditText>(R.id.edit_medication_label).setText(medication.label)
+            findViewById<TextInputEditText>(R.id.edit_medication_description).setText(medication.description)
+            findViewById<EditText>(R.id.edit_medication_current_amount).setText(medication.currentAmount.toString())
+            findViewById<EditText>(R.id.edit_medication_max_amount).setText(medication.maxAmount.toString())
+            val spinner = findViewById<Spinner>(R.id.edit_medication_dose_unit)
+            for(i in 0..spinner.adapter.count) {
+                if(spinner.adapter.getItem(i) == medication.doseUnit) {
+                    spinner.setSelection(i)
+                    break
+                }
+            }
         }
     }
 

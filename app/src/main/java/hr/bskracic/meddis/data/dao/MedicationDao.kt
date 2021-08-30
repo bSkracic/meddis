@@ -1,5 +1,6 @@
 package hr.bskracic.meddis.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import hr.bskracic.meddis.data.model.Medication
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,9 @@ interface MedicationDao {
 
     @Query("SELECT * FROM medications WHERE id IN (:medicationIds)")
     fun getByIds(medicationIds: IntArray): Flow<List<Medication>>
+
+    @Query("SELECT * FROM medications WHERE id=:medicationId")
+    fun getById(medicationId: Int): LiveData<Medication>
 
     @Update
     fun update(vararg medication: Medication)

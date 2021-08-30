@@ -14,6 +14,10 @@ class EditMedicationViewModel(private val repository: MedicationRepository) : Vi
 
     val allMedications: LiveData<List<Medication>> = repository.medications.asLiveData()
 
+    fun getById(medicationId: Int): LiveData<Medication> {
+        return repository.getById(medicationId)
+    }
+
     fun insert(medication: Medication) = CoroutineScope(Dispatchers.IO).launch {
         repository.insert(medication)
     }
@@ -22,17 +26,9 @@ class EditMedicationViewModel(private val repository: MedicationRepository) : Vi
         repository.update(medication)
     }
 
-    fun getById(medicationId: Int): Medication? {
-
-        var medication: Medication? = null
-
-        CoroutineScope(Dispatchers.IO).launch {
-            medication = repository.getByIds(intArrayOf(medicationId)).asLiveData().value?.get(0)
-        }
-
-        return medication
+    fun delete(medication: Medication) = CoroutineScope(Dispatchers.IO).launch {
+        repository.delete(medication)
     }
-
 }
 
 class EditMedicationViewModelFactory(private val repository: MedicationRepository): ViewModelProvider.Factory{

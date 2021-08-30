@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,15 +39,23 @@ class MedicationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val medicationsContainer = view.findViewById<RecyclerView>(R.id.recyclerView_medications)
-        val adapter = MedicationAdapter()
+        val adapter = MedicationAdapter(object : MedicationAdapter.MedicationListener {
+            override fun onMedicationClicked(medication: Medication) {
+                EditMedicationFragment.newInstance(medication.id).show(activity?.supportFragmentManager!!, null)
+            }
+
+            // Useless
+            override fun onMedicationSwiped(medication: Medication) {
+                // Useless
+            }
+
+        })
         medicationsContainer.adapter = adapter
         medicationsContainer.layoutManager = LinearLayoutManager(requireContext())
 
         medicationViewModel.allMedications.observe(viewLifecycleOwner, { medications ->
             adapter.submitList(medications)
         })
-
-
 
         debug()
     }
