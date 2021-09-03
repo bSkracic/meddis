@@ -14,4 +14,7 @@
     <string name="menu_therapy">Terapija</string>
     <string name="menu_medication">Lijekovi</string>
     <string name="menu_preference">Postavke</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Spremi</string>
 </resources>

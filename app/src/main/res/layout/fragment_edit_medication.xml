@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_medication_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.medication.EditMedicationFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/edit_medication_card"
+        android:layout_width="360dp"
+        android:layout_height="550dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="10dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="15dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/ic_medication" />
+
+                <TextView
+                    android:id="@+id/edit_medication_warning"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#BB0000"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_medication_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="15dp"
+                            android:background="@color/teal_200"
+                            android:hint="Naziv" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_medication_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:background="@color/teal_200"
+                        android:textAlignment="gravity"
+                        android:layout_gravity="top"
+                        android:maxHeight="100dp"
+                        android:hint="Opis"
+                    />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trenutna količina"
+                        android:layout_marginLeft="15dp"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_medication_current_amount"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:inputType="number"
+                        android:text="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maksimalna količina"
+                        android:layout_marginLeft="15dp"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_medication_max_amount"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:inputType="number"
+                        android:text="0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="50dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Jedinica doze"/>
+
+                    <Spinner
+                        android:id="@+id/edit_medication_dose_unit"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="gravity"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_medication_delete"
+                    android:layout_width="300dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#CC0000"
+                    android:text="Ukloni"
+                    app:cornerRadius="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_medication_save"
+                    android:layout_width="300dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:text="@string/save"
+                    app:cornerRadius="20dp" />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</FrameLayout>

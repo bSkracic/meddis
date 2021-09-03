@@ -7,5 +7,4 @@ import kotlinx.coroutines.flow.Flow
 class TherapyRepository(private val therapyDao: TherapyDao) {
     val therapies: Flow<List<Therapy>> = therapyDao.getAll()
 
-
 }
