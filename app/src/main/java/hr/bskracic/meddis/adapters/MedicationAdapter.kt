@@ -1,4 +1,4 @@
-package hr.bskracic.meddis.adapter
+package hr.bskracic.meddis.adapters
 
 import android.view.LayoutInflater
 import android.view.MotionEvent

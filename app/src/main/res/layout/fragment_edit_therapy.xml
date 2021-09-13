@@ -1,14 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/edit_therapy_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.therapy.EditTherapyFragment">
+    android:background="@color/gray"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.edits.therapy.EditTherapyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:text="Medikacija"/>
 
-</FrameLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Lijek:"
+            android:textSize="@dimen/normal_font_size"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textAlignment="textEnd"
+            tools:ignore="RtlCompat" />
+
+        <Spinner
+            android:id="@+id/edit_therapy_medication"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:text="Doza"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_therapy_dosage"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:text="0"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/edit_therapy_dose_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="{dose_unit}" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:text="Podsjetnici"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_therapy_alarm_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_alarm_add"
+            app:iconTint="#00CC00"
+            app:iconGravity="textStart"
+            android:text="Novi podsjetnik"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/edit_therapy_alarms"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_therapy_delete"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/red"
+            android:text="@string/delete"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="textStart"
+            app:cornerRadius="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_therapy_save"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/save"
+            app:icon="@drawable/ic_save"
+            app:iconGravity="textStart"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

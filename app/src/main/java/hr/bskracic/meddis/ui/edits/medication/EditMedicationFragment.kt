@@ -1,4 +1,4 @@
-package hr.bskracic.meddis.ui.medication
+package hr.bskracic.meddis.ui.edits.medication
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -16,6 +16,8 @@ import com.google.android.material.textfield.TextInputEditText
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.data.model.Medication
+import hr.bskracic.meddis.ui.medication.EditMedicationViewModel
+import hr.bskracic.meddis.ui.medication.EditMedicationViewModelFactory
 
 private const val MEDICATION_ID = "MEDICATION_ID"
 
@@ -23,7 +25,7 @@ class EditMedicationFragment : DialogFragment() {
     private var medicationID: Int? = null
 
     private val medicationViewModel: EditMedicationViewModel by viewModels {
-        EditMedicationViewModelFactory((activity?.application as MeddisApplication).repository)
+        EditMedicationViewModelFactory((activity?.application as MeddisApplication).medicationRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -167,7 +169,6 @@ class EditMedicationFragment : DialogFragment() {
          * @param medicationID Id of the medication user wants to edit; 0 is new medication fragment.
          * @return A new instance of fragment NewMedicationFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(medicationID: Int) =
             EditMedicationFragment().apply {

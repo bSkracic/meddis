@@ -4,21 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
-import hr.bskracic.meddis.adapter.MedicationAdapter
+import hr.bskracic.meddis.adapters.MedicationAdapter
 import hr.bskracic.meddis.data.model.Medication
 import hr.bskracic.meddis.databinding.FragmentMedicationBinding
+import hr.bskracic.meddis.ui.edits.medication.EditMedicationFragment
 
-class MedicationFragment : Fragment() {
+class MedicationListFragment : Fragment() {
 
     private val medicationViewModel: MedicationViewModel by viewModels {
-        MedicationViewModelFactory((activity?.application as MeddisApplication).repository)
+        MedicationViewModelFactory((activity?.application as MeddisApplication).medicationRepository)
     }
     private var _binding: FragmentMedicationBinding? = null
 
@@ -55,17 +55,14 @@ class MedicationFragment : Fragment() {
 
         medicationViewModel.allMedications.observe(viewLifecycleOwner, { medications ->
             adapter.submitList(medications)
+            for(medication in medications) {
+                print(medication.id)
+            }
         })
-
-        debug()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun debug() {
-        medicationViewModel.insert(Medication(0, "ubaceni lijek", "hehe xD", 69, 69, "tableta"))
     }
 }

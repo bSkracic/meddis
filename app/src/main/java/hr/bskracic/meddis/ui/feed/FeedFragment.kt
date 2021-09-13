@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.data.MeddisDatabase
-import hr.bskracic.meddis.repository.MedicationRepository
+import hr.bskracic.meddis.repositories.MedicationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch

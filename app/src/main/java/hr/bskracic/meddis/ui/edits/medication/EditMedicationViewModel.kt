@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import hr.bskracic.meddis.data.model.Medication
-import hr.bskracic.meddis.repository.MedicationRepository
+import hr.bskracic.meddis.repositories.MedicationRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

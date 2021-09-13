@@ -12,6 +12,7 @@
         android:theme="@style/Theme.Meddis.NoActionBar">
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
             android:theme="@style/Theme.Meddis.NoActionBar">
             <intent-filter>

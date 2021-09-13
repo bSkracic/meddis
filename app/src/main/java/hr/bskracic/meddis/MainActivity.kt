@@ -1,19 +1,18 @@
 package hr.bskracic.meddis
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import hr.bskracic.meddis.databinding.ActivityMainBinding
-import hr.bskracic.meddis.ui.medication.EditMedicationFragment
+import hr.bskracic.meddis.ui.edits.medication.EditMedicationFragment
+import hr.bskracic.meddis.ui.edits.therapy.THERAPY_ID
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,18 +26,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+        supportActionBar?.title = "Meddis"
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        // Setup bottom menu
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_feed, R.id.nav_medication, R.id.nav_therapy, R.id.nav_preference
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        val navView: BottomNavigationView = findViewById(R.id.bottom_menu)
         navView.setupWithNavController(navController)
 
         // FAB configuration
@@ -50,31 +42,40 @@ class MainActivity : AppCompatActivity() {
                     fab.setOnClickListener {
                         openEditMedication()
                     }
+                    navView.visibility = View.VISIBLE
                 }
                 R.id.nav_therapy -> {
                     fab.visibility = View.VISIBLE
-                    fab.setOnClickListener(null)
+                    fab.setOnClickListener {
+                        openEditTherapy()
+                    }
+                    navView.visibility = View.VISIBLE
+                }
+                R.id.nav_edit_therapy -> {
+                    navView.visibility = View.GONE
                 }
                 else -> {
                     fab.visibility = View.GONE
+                    navView.visibility = View.VISIBLE
                 }
             }
 
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+        findViewById<BottomNavigationView>(R.id.bottom_menu).visibility = View.VISIBLE
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     private fun openEditMedication() {
         EditMedicationFragment.newInstance(0).show(supportFragmentManager, null)
+    }
+
+    private fun openEditTherapy() {
+        val bundle = bundleOf(THERAPY_ID to 0)
+        findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_edit_therapy, bundle)
+        findViewById<BottomNavigationView>(R.id.bottom_menu).visibility = View.GONE
     }
 }

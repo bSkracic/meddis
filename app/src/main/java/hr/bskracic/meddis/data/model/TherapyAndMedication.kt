@@ -3,11 +3,11 @@ package hr.bskracic.meddis.data.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class CollectionWithTherapies(
-    @Embedded val collection: Collection,
+data class TherapyAndMedication(
+    @Embedded val medication: Medication,
     @Relation(
         parentColumn = "id",
-        entityColumn = "collection_id"
+        entityColumn = "medication_id"
     )
-    val therapies: List<Therapy>
+    val therapy: Therapy
 )

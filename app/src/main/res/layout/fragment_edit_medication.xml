@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.medication.EditMedicationFragment">
+    tools:context=".ui.edits.medication.EditMedicationFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/edit_medication_card"
@@ -48,7 +48,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="15dp"
-                            android:background="@color/teal_200"
+                            android:background="@color/white"
                             android:hint="Naziv" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
-                        android:background="@color/teal_200"
+                        android:background="@color/white"
                         android:textAlignment="gravity"
                         android:layout_gravity="top"
                         android:maxHeight="100dp"
@@ -162,7 +162,6 @@
                     app:cornerRadius="20dp" />
 
             </LinearLayout>
-
 
         </FrameLayout>
 

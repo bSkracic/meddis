@@ -7,14 +7,16 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="menu_feed">Lista</string>
     <string name="menu_therapy">Terapija</string>
     <string name="menu_medication">Lijekovi</string>
     <string name="menu_preference">Postavke</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Spremi</string>
+    <string name="delete">Ukloni</string>
+
+    <string-array name="repeat_type">
+        <item>Dnevno</item>
+        <item>Tjedno</item>
+    </string-array>
+
 </resources>
