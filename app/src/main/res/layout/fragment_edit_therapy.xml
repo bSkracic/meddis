@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/edit_therapy_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -52,6 +51,7 @@
         android:text="Doza"/>
 
     <LinearLayout
+        android:id="@+id/edit_therapy_dose_layout"
         android:layout_width="match_parent"
         android:padding="10dp"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:inputType="number"
-            android:text="0"
+            android:text="1"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -84,6 +84,7 @@
         android:text="Podsjetnici"/>
 
     <LinearLayout
+        android:id="@+id/edit_therapy_alarm_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -109,33 +110,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_therapy_save"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit_therapy_delete"
-            android:layout_width="300dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/red"
-            android:text="@string/delete"
-            app:icon="@drawable/ic_delete"
-            app:iconGravity="textStart"
-            app:cornerRadius="10dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit_therapy_save"
-            android:layout_width="300dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/save"
-            app:icon="@drawable/ic_save"
-            app:iconGravity="textStart"
-            app:cornerRadius="10dp" />
-
-    </LinearLayout>
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/save"
+        app:icon="@drawable/ic_save"
+        app:iconGravity="textStart"
+        app:cornerRadius="5dp" />
 
 </LinearLayout>

@@ -4,18 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import hr.bskracic.meddis.data.dao.AlarmDao
 import hr.bskracic.meddis.data.dao.MedicationDao
 import hr.bskracic.meddis.data.dao.TherapyDao
-import hr.bskracic.meddis.data.model.Medication
-import hr.bskracic.meddis.data.model.Therapy
+import hr.bskracic.meddis.data.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Medication::class, Therapy::class], version = 1)
+@Database(entities = [Medication::class, Therapy::class, Alarm::class], version = 1)
+@TypeConverters(RepeatTypeConverter::class)
 abstract class MeddisDatabase : RoomDatabase() {
     abstract fun medicationDao(): MedicationDao
     abstract fun therapyDao(): TherapyDao
+    abstract fun alarmDao(): AlarmDao
 
     private class MeddisDatabaseCallback(
         private val scope: CoroutineScope
@@ -27,6 +30,7 @@ abstract class MeddisDatabase : RoomDatabase() {
                 scope.launch {
                     val medicationDao = database.medicationDao()
                     val therapyDao = database.therapyDao()
+                    val alarmDao = database.alarmDao()
 
                     medicationDao.deleteAll()
 
@@ -36,8 +40,14 @@ abstract class MeddisDatabase : RoomDatabase() {
                         )
 
                     therapyDao.insert(
-                        Therapy(0, 1, 1, "8:00|0;10:00|0"),
-                        Therapy(0, 1, 2, "21:00|0")
+                        Therapy(0, 1, 1),
+                        Therapy(0, 2, 1)
+                    )
+
+                    alarmDao.insert(
+                        Alarm(0, 1, "8:00", RepeatType.DAILY),
+                        Alarm(0, 1, "20:00", RepeatType.DAILY),
+                        Alarm(0, 2, "15:00", RepeatType.DAILY)
                     )
 
                 }

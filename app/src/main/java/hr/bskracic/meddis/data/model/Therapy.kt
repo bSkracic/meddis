@@ -7,6 +7,5 @@ import androidx.room.ForeignKey.CASCADE
 data class Therapy (
         @PrimaryKey(autoGenerate = true) val id: Int,
         @ColumnInfo(name="medication_id") val medicationId: Int,
-        @ColumnInfo(name="dosage") val dosage: Int,
-        @ColumnInfo(name="alarms") val alarms: String
+        @ColumnInfo(name="dosage") val dosage: Int
         )

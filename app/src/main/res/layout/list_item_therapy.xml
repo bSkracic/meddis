@@ -53,14 +53,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/therapy_remove"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:backgroundTint="@color/red"
             app:icon="@drawable/ic_delete"
-            app:iconGravity="start"
-            app:iconSize="35dp" />
+            app:iconSize="35dp"
+            app:iconGravity="end"/>
 
     </RelativeLayout>
 

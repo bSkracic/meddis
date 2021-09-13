@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.data.model.TherapyAndMedication
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TherapyDao {
@@ -31,7 +30,9 @@ interface TherapyDao {
     @Insert
     fun insert(vararg therapies: Therapy)
 
+    @Insert
+    fun insertWithIdReturn(therapy: Therapy): Long
+
     @Delete
     fun delete(therapy: Therapy)
-
 }

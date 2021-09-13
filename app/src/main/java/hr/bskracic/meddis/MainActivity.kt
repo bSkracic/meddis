@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                     navView.visibility = View.VISIBLE
                 }
                 R.id.nav_edit_therapy -> {
+                    fab.visibility = View.GONE
                     navView.visibility = View.GONE
                 }
                 else -> {

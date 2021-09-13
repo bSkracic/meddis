@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import hr.bskracic.meddis.data.dao.TherapyDao
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.data.model.TherapyAndMedication
+import hr.bskracic.meddis.data.model.TherapyAndMedicationsWithAlarms
 import kotlinx.coroutines.flow.Flow
 
 class TherapyRepository(private val therapyDao: TherapyDao) {
@@ -21,7 +22,6 @@ class TherapyRepository(private val therapyDao: TherapyDao) {
         return therapyDao.getAllWithMedication()
     }
 
-
     @WorkerThread
     fun getById(therapyId: Int) : LiveData<Therapy> {
         return therapyDao.getById(therapyId)
@@ -36,6 +36,12 @@ class TherapyRepository(private val therapyDao: TherapyDao) {
     @Suppress("RedundantSuspendModifier")
     suspend fun insert(therapy: Therapy) {
         therapyDao.insert(therapy)
+    }
+
+    @WorkerThread
+    @Suppress("RedundantSuspendModifier")
+    suspend fun insertWithIdReturn(therapy: Therapy): Long {
+        return therapyDao.insertWithIdReturn(therapy)
     }
 
     @WorkerThread

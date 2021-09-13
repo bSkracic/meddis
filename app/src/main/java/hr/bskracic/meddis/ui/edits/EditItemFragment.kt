@@ -36,6 +36,7 @@ abstract class EditItemFragment<T>(@LayoutRes contentLayoutRes: Int) : Fragment(
         // Could be on earlier stages of lifecycle?
         isUpdating = if(itemId == 0) {
             deleteButton?.visibility = View.GONE
+            populateView()
             false
         } else {
             viewModel.getById(itemId).observe(viewLifecycleOwner, {

@@ -1,9 +1,13 @@
 package hr.bskracic.meddis.data.model
 
-class Alarm(val id: Int, var time: String, var repeatType: Int) {
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    companion object {
-        const val REPEAT_DAILY = 0
-        const val REPEAT_WEEKLY = 1
-    }
-}
+@Entity(tableName = "alarms")
+data class Alarm(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name="therapy_id") val therapyId: Int,
+    @ColumnInfo(name="time") var time: String,
+    @ColumnInfo(name="repeat_type") var repeatType: RepeatType,
+    )

@@ -5,13 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
@@ -19,13 +20,17 @@ import hr.bskracic.meddis.adapters.AlarmAdapter
 import hr.bskracic.meddis.adapters.MedicationSpinnerAdapter
 import hr.bskracic.meddis.data.model.Alarm
 import hr.bskracic.meddis.data.model.Medication
+import hr.bskracic.meddis.data.model.RepeatType
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.ui.edits.EditItemFragment
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.properties.Delegates
 
 const val THERAPY_ID = "THERAPY_ID"
+
+// TODO: implement canceling when creating new fragment because alarms are being inserted into database
 
 class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_therapy) {
 
@@ -34,16 +39,22 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
     override val viewModel: EditTherapyViewModel by viewModels {
         EditTherapyViewModelFactory(
             (activity?.application as MeddisApplication).therapyRepository,
-            (activity?.application as MeddisApplication).medicationRepository
+            (activity?.application as MeddisApplication).medicationRepository,
+            (activity?.application as MeddisApplication).alarmRepository
         )
     }
 
     private var medicationSpinner: Spinner? = null
     private var dosageTextView: TextView? = null
     private var doseUnitTextView: TextView? = null
+    private var alarmsContainer: RecyclerView? = null
+    private var doseLayout: LinearLayout? = null
+    private var alarmLayout: LinearLayout? = null
 
     private var medications: List<Medication> = arrayListOf()
     private var alarms: MutableList<Alarm> = mutableListOf()
+
+    private var initSpinner: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +68,38 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
         medicationSpinner = view.findViewById(R.id.edit_therapy_medication)
         dosageTextView = view.findViewById(R.id.edit_therapy_dosage)
         doseUnitTextView = view.findViewById(R.id.edit_therapy_dose_unit)
+        alarmsContainer = view.findViewById(R.id.edit_therapy_alarms)
+        doseLayout = view.findViewById(R.id.edit_therapy_dose_layout)
+        alarmLayout = view.findViewById(R.id.edit_therapy_alarm_layout)
+        saveButton = view.findViewById(R.id.edit_therapy_save)
 
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun populateView() {
         if(!isUpdating) {
             doseUnitTextView?.visibility = View.GONE
+            doseLayout?.visibility = View.GONE
+            alarmLayout?.visibility = View.GONE
+            saveButton?.visibility = View.GONE
+        } else {
+            setAlarmContainer()
+            viewModel.getMedicationById(item?.medicationId!!).observe(viewLifecycleOwner, {
+                doseUnitTextView?.text = it.doseUnit
+            })
+        }
+
+        alarmsContainer?.apply {
+            this.adapter = AlarmAdapter(object : AlarmAdapter.AlarmListener {
+                override fun onDeleteClicked(alarm: Alarm) {
+                    viewModel.delete(alarm)
+                }
+
+                override fun onEditTimeClicked(alarm: Alarm) {
+                    createTimePicker(alarm).show()
+                }
+            })
+            this.layoutManager = LinearLayoutManager(context)
         }
 
         //  Medication spinner set up
@@ -74,74 +114,57 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
                     position: Int,
                     id: Long
                 ) {
+                    if(!initSpinner){
+                        initSpinner = true
+                        return
+                    }
+
                     doseUnitTextView?.visibility = View.VISIBLE
                     doseUnitTextView?.text = medications[position].doseUnit
+
+                    if(!isUpdating) {
+                        viewModel.insert(Therapy(0, medications[position].id, 1)) { therapyId ->
+                            itemId = therapyId.toInt()
+                            CoroutineScope(Dispatchers.Main).launch {
+                                isUpdating = true
+                                doseLayout?.visibility = View.VISIBLE
+                                alarmLayout?.visibility = View.VISIBLE
+                                saveButton?.visibility = View.VISIBLE
+                                setAlarmContainer() // transition to next stage of input
+                            }
+                        }
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     TODO("Not yet implemented")
                 }
             }
-        })
-
-        deleteButton = view.findViewById(R.id.edit_therapy_delete)
-        saveButton = view.findViewById(R.id.edit_therapy_save)
-
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun populateView() {
-        // BAD
-        viewModel.getAllMedication().observe(viewLifecycleOwner, {
-            val adapter = MedicationSpinnerAdapter(requireContext(), it)
-            medications = it
-            medicationSpinner?.adapter = adapter
-            medicationSpinner?.setSelection((medicationSpinner?.adapter as MedicationSpinnerAdapter).getPosition(medications.find { m -> m.id == item?.medicationId }))
-
-        })
-
-        // Alarm recyclerView setup
-        val adapter = AlarmAdapter(object: AlarmAdapter.AlarmListener {
-            override fun onDeleteClicked(alarm: Alarm) {
-                alarms.removeAll { a-> a.id == alarm.id }
+            if(isUpdating){
+                medicationSpinner?.setSelection(adapter.getPosition(medications.find { m -> m.id == item?.medicationId }))
             }
-
-            override fun onEditTimeClicked(alarm: Alarm) {
-                createTimePicker(alarm.id).show()
-            }
-        })
-
-        view?.findViewById<RecyclerView>(R.id.edit_therapy_alarms)?.apply {
-            this.adapter = adapter
-            this.layoutManager = LinearLayoutManager(context)
-        }
-
-        alarms = mutableListOf()
-
-        item?.alarms?.split(';')?.forEachIndexed { index, s ->
-            if(s.contains('|')) {
-                val alarmData = s.split('|')
-                alarms.add(Alarm(index, alarmData[0], alarmData[1].toInt()))
-            }
-        }
-
-        adapter.submitList(alarms)
-
-        view?.findViewById<Button>(R.id.edit_therapy_alarm_add)?.setOnClickListener {
-            alarms.add(Alarm(alarms.size, "8:00", Alarm.REPEAT_DAILY))
-            adapter.submitList(alarms) // Does not work as intended
-        }
-
-
-        viewModel.getMedicationById(item?.medicationId!!).observe(viewLifecycleOwner, {
-            doseUnitTextView?.text = it.doseUnit
         })
 
         dosageTextView?.text = item?.dosage.toString()
     }
 
+    private fun setAlarmContainer() {
+        // TODO: Adapter should be set regardless of item's existence
+        viewModel.getAlarmsByTherapyId(itemId).observe(viewLifecycleOwner, {
+            (alarmsContainer?.adapter as AlarmAdapter).submitList(it)
+        })
+
+        view?.findViewById<MaterialButton>(R.id.edit_therapy_alarm_add)?.setOnClickListener {
+            viewModel.insert(Alarm(0, itemId, "8:00", RepeatType.DAILY))
+        }
+    }
+
     override fun validateItem(): String? {
         if(item != null) {
+            if(alarmsContainer != null){
+                if(alarmsContainer?.adapter!!.itemCount <= 0)
+                    return "Potrebno je dodati barem jedan podsjetnik"
+            }
             if(item?.dosage!! <= 0)
                 return "Pogrešna vrijednost doze lijeka"
             if(item?.medicationId == 0)
@@ -152,67 +175,31 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
     }
 
     override fun updateItemFromView(): Therapy {
-
         var medicationId = 0
-
         if(medicationSpinner?.selectedItem != null) {
             medicationId = (medicationSpinner?.selectedItem as Medication).id
-        }
-
-        var alarmString = ""
-
-        if(alarms.isNotEmpty()) {
-            for(i in 0 until alarms.size) {
-                if(alarms.size > 0) {
-                    alarmString += ";"
-                }
-                alarmString += "${alarms[i].time}|${alarms[i].repeatType}"
-            }
         }
 
         return Therapy(
             itemId,
             medicationId,
-            dosageTextView?.text.toString().toInt(),
-            alarmString
+            dosageTextView?.text.toString().toInt()
         )
     }
 
-    private fun createTimePicker(alarmId: Int): TimePickerDialog {
+    private fun createTimePicker(alarm: Alarm): TimePickerDialog {
         val c = Calendar.getInstance()
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val minute = c.get(Calendar.MINUTE)
 
         // Create a new instance of TimePickerDialog and return it
         return TimePickerDialog(activity,
-            { _, hourOfDay, minute ->
-                for (alarm in alarms) {
-                    if(alarm.id == alarmId){
-                        alarm.time = "$hourOfDay:$minute"
-                    }
-                }
+            { _, h, min ->
+                alarm.time = "${h}:${min}"
+                viewModel.update(alarm)
+                Snackbar.make(requireView(), "Time picked: ${h}:${min}", Snackbar.LENGTH_SHORT).show()
+                // TODO: Call Alarm Manager Helper and schedule alarm for this item in specified time and with specified interval
             }, hour, minute, true)
     }
-
-    private fun setMedicationsSpinner() {
-
-    }
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param therapyId Id of the medication user wants to edit; 0 is new medication fragment.
-//         * @return A new instance of fragment NewMedicationFragment.
-//         */
-//        @JvmStatic
-//        fun newInstance(therapyId: Int) =
-//            EditTherapyFragment().apply {
-//                arguments = Bundle().apply {
-//                    putInt(ITEM_ID, therapyId)
-//                }
-//            }
-//    }
 
 }
