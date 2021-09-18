@@ -1,7 +1,6 @@
 package hr.bskracic.meddis.ui.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,9 +10,6 @@ import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.adapters.FeedItemAdapter
 import hr.bskracic.meddis.data.model.FeedItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
 
@@ -37,12 +33,20 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
         view.findViewById<RecyclerView>(R.id.recyclerView_feeds).apply {
             this.adapter = adapter
-            this.layoutManager = LinearLayoutManager(context)
+            this.layoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
         }
 
         view.findViewById<RecyclerView>(R.id.recyclerView_feeds_checked).apply {
             this.adapter = checkedAdapter
-            this.layoutManager = LinearLayoutManager(context)
+            this.layoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
         }
 
         viewModel.allFeedItemsUnchecked.observe(viewLifecycleOwner, {
