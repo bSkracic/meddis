@@ -19,4 +19,6 @@
         <item>Tjedno</item>
     </string-array>
 
+    <string name="therapy_notification_channel_id">hr.bskracic.notificationChannel.0</string>
+    <string name="therapy_notification_channel_name">Terapija</string>
 </resources>

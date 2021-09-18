@@ -29,7 +29,9 @@ class AlarmAdapter(private val alarmListener: AlarmListener) : ListAdapter<Alarm
         private val deleteImageView = itemView.findViewById<ImageView>(R.id.alarm_delete)
 
         fun bind(alarm: Alarm, alarmListener: AlarmListener) {
-            timeTextView.text = alarm.time
+            val min = alarm.minutes
+            val h = alarm.hours
+            timeTextView.text = "${if(h < 10) "0$h" else "$h"}:${if(min < 10) "0$min" else "$min"}"
 
             timeTextView.setOnClickListener {
                 alarmListener.onEditTimeClicked(alarm)
@@ -54,7 +56,7 @@ class AlarmAdapter(private val alarmListener: AlarmListener) : ListAdapter<Alarm
         }
 
         override fun areContentsTheSame(oldItem: Alarm, newItem: Alarm): Boolean {
-            return oldItem.time == newItem.time
+            return (oldItem.hours == newItem.hours) && (oldItem.minutes == newItem.minutes)
         }
     }
 

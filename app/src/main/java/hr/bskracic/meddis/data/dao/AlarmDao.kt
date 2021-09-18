@@ -21,6 +21,9 @@ interface AlarmDao {
     @Insert
     fun insert(vararg alarms: Alarm)
 
+    @Insert
+    fun insertWithIdReturn(alarm: Alarm): Long
+
     @Delete
     fun delete(alarm: Alarm)
 }

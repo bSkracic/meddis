@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "alarms")
 data class Alarm(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name="therapy_id") val therapyId: Int,
-    @ColumnInfo(name="time") var time: String,
+    @ColumnInfo(name="hours") var hours: Int,
+    @ColumnInfo(name="minutes") var minutes: Int,
     @ColumnInfo(name="repeat_type") var repeatType: RepeatType,
     )

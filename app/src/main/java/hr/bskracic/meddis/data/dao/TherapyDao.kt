@@ -11,7 +11,7 @@ interface TherapyDao {
     fun getAll(): LiveData<List<Therapy>>
 
     @Transaction
-    @Query("SELECT * FROM therapies INNER JOIN medications ON medications.id = medication_id")
+    @Query("SELECT * FROM therapies ")
     fun getAllWithMedication(): LiveData<List<TherapyAndMedication>>
 
     @Query("SELECT * FROM therapies WHERE id IN (:therapyIds)")
@@ -21,7 +21,11 @@ interface TherapyDao {
     fun getById(therapyId: Int): LiveData<Therapy>
 
     @Transaction
-    @Query("SELECT * FROM therapies INNER JOIN medications ON medications.id = medication_id WHERE therapies.id=:therapyId")
+    @Query("SELECT * FROM therapies  WHERE therapies.id=:therapyId")
+    fun getByIdWithMedicationSync(therapyId: Int): TherapyAndMedication
+
+    @Transaction
+    @Query("SELECT * FROM therapies WHERE therapies.id=:therapyId")
     fun getByIdWithMedication(therapyId: Int): LiveData<TherapyAndMedication>
 
     @Update

@@ -4,30 +4,54 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
-import hr.bskracic.meddis.data.MeddisDatabase
-import hr.bskracic.meddis.repositories.MedicationRepository
+import hr.bskracic.meddis.adapters.FeedItemAdapter
+import hr.bskracic.meddis.data.model.FeedItem
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
 
-    companion object {
-        fun newInstance() = FeedFragment()
+    val viewModel: FeedViewModel by viewModels {
+        FeedViewModelFactory((activity?.application as MeddisApplication).feedItemRepository)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val database: MeddisDatabase by lazy { MeddisDatabase.getDatabase(requireContext(), CoroutineScope(SupervisorJob())) }
-
-        val repository: MedicationRepository by lazy { MedicationRepository(database.medicationDao()) }
-
-        CoroutineScope(SupervisorJob()).launch {
-            val medications = database.medicationDao().getAllList()
-            for(m in medications) {
-                Log.println(Log.DEBUG, "MED_CHECK: ", "${m.id} | ${m.label}")
+        val adapter = FeedItemAdapter(object : FeedItemAdapter.FeedItemListener {
+            override fun onFeedItemChecked(feedItem: FeedItem) {
+                feedItem.isChecked = true
+                viewModel.update(feedItem)
             }
+        })
+
+        val checkedAdapter = FeedItemAdapter(object : FeedItemAdapter.FeedItemListener {
+            override fun onFeedItemChecked(feedItem: FeedItem) {
+            }
+        })
+
+        view.findViewById<RecyclerView>(R.id.recyclerView_feeds).apply {
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(context)
         }
+
+        view.findViewById<RecyclerView>(R.id.recyclerView_feeds_checked).apply {
+            this.adapter = checkedAdapter
+            this.layoutManager = LinearLayoutManager(context)
+        }
+
+        viewModel.allFeedItemsUnchecked.observe(viewLifecycleOwner, {
+            adapter.submitList(it)
+        })
+
+        viewModel.allFeedItemsChecked.observe(viewLifecycleOwner, {
+            checkedAdapter.submitList(it)
+        })
     }
+
 }

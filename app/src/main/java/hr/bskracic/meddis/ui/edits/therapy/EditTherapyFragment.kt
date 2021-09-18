@@ -1,6 +1,8 @@
 package hr.bskracic.meddis.ui.edits.therapy
 
+import android.app.AlarmManager
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -13,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.adapters.AlarmAdapter
@@ -23,6 +24,7 @@ import hr.bskracic.meddis.data.model.Medication
 import hr.bskracic.meddis.data.model.RepeatType
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.ui.edits.EditItemFragment
+import hr.bskracic.meddis.utils.AlarmUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,7 +32,7 @@ import java.util.*
 
 const val THERAPY_ID = "THERAPY_ID"
 
-// TODO: implement canceling when creating new fragment because alarms are being inserted into database
+// TODO: implement canceling when creating  new fragment because alarms are being inserted into database
 
 class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_therapy) {
 
@@ -92,6 +94,7 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
         alarmsContainer?.apply {
             this.adapter = AlarmAdapter(object : AlarmAdapter.AlarmListener {
                 override fun onDeleteClicked(alarm: Alarm) {
+                    AlarmUtils.removeAlarm(requireContext(), activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager, alarm)
                     viewModel.delete(alarm)
                 }
 
@@ -155,7 +158,23 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
         })
 
         view?.findViewById<MaterialButton>(R.id.edit_therapy_alarm_add)?.setOnClickListener {
-            viewModel.insert(Alarm(0, itemId, "8:00", RepeatType.DAILY))
+            val calendar = Calendar.getInstance()
+
+            val now = System.currentTimeMillis()
+
+            calendar.timeInMillis = System.currentTimeMillis()
+            calendar.add(Calendar.MINUTE, 1)
+
+            val alarm = Alarm(0, itemId, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), RepeatType.DAILY)
+
+            viewModel.insert(alarm) { id ->
+                alarm.id = id.toInt()
+                AlarmUtils.setAlarm(
+                    requireContext(),
+                    activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager,
+                    alarm
+                )
+            }
         }
     }
 
@@ -195,11 +214,13 @@ class EditTherapyFragment : EditItemFragment<Therapy>(R.layout.fragment_edit_the
         // Create a new instance of TimePickerDialog and return it
         return TimePickerDialog(activity,
             { _, h, min ->
-                alarm.time = "${h}:${min}"
+                alarm.hours = h
+                alarm.minutes = min
                 viewModel.update(alarm)
-                Snackbar.make(requireView(), "Time picked: ${h}:${min}", Snackbar.LENGTH_SHORT).show()
-                // TODO: Call Alarm Manager Helper and schedule alarm for this item in specified time and with specified interval
-            }, hour, minute, true)
+
+                AlarmUtils.setAlarm(requireContext(), activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager , alarm)
+            },
+            hour, minute, true)
     }
 
 }

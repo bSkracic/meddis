@@ -58,6 +58,10 @@ class EditTherapyViewModel(private val therapyRepo: TherapyRepository, private v
         onInserted(therapyRepo.insertWithIdReturn(therapy))
     }
 
+    fun insert(alarm: Alarm, onInserted: (id: Long) -> Unit) = CoroutineScope(Dispatchers.IO).launch {
+        onInserted(alarmRepo.insertWithIdReturn(alarm))
+    }
+
     override fun insert(therapy: Therapy, ) = CoroutineScope(Dispatchers.IO).launch {
         therapyRepo.insert(therapy)
     }

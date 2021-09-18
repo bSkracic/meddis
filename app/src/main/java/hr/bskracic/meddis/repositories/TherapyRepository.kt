@@ -33,6 +33,11 @@ class TherapyRepository(private val therapyDao: TherapyDao) {
     }
 
     @WorkerThread
+    fun getByIdWithMedicationSync(therapyId: Int): TherapyAndMedication {
+        return therapyDao.getByIdWithMedicationSync(therapyId)
+    }
+
+    @WorkerThread
     @Suppress("RedundantSuspendModifier")
     suspend fun insert(therapy: Therapy) {
         therapyDao.insert(therapy)

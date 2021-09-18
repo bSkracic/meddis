@@ -14,16 +14,25 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
     }
 
     @WorkerThread
+    @Suppress("RedundantSuspendModifier")
     suspend fun insert(alarm: Alarm) {
         return alarmDao.insert(alarm)
     }
 
     @WorkerThread
+    @Suppress("RedundantSuspendModifier")
+    suspend fun insertWithIdReturn(alarm: Alarm): Long {
+        return alarmDao.insertWithIdReturn(alarm)
+    }
+
+    @WorkerThread
+    @Suppress("RedundantSuspendModifier")
     suspend fun update(alarm: Alarm) {
         alarmDao.update(alarm)
     }
 
     @WorkerThread
+    @Suppress("RedundantSuspendModifier")
     suspend fun delete(alarm: Alarm) {
         alarmDao.delete(alarm)
     }
