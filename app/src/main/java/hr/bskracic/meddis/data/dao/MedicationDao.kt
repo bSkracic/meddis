@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicationDao {
+
     @Query("SELECT * FROM medications")
     fun getAll(): Flow<List<Medication>>
 
@@ -30,4 +31,5 @@ interface MedicationDao {
 
     @Query("DELETE FROM medications")
     fun deleteAll()
+
 }

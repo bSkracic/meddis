@@ -1,23 +1,13 @@
 package hr.bskracic.meddis.data.model
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "therapies",
-    foreignKeys = [
-        ForeignKey(
-            entity = Medication::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("medication_id"),
-            onDelete = ForeignKey.CASCADE
+@Entity(tableName = "therapies")
+data class Therapy (
+        @PrimaryKey(autoGenerate = true) val id: Int,
+        @ColumnInfo(name="medication_id") val medicationId: Int,
+        @ColumnInfo(name="dosage") val dosage: Int,
+        @ColumnInfo(name="collection_id") val collectionId: Int
         )
-    ],
-    indices = [
-        Index(value = arrayOf("medication_id"))
-    ]
-)
-data class Therapy(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "medication_id") val medicationId: Int,
-    @ColumnInfo(name = "dosage") val dosage: Int
-)

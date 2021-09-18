@@ -13,28 +13,13 @@
 
     <fragment
         android:id="@+id/nav_therapy"
-        android:name="hr.bskracic.meddis.ui.therapy.TherapyListFragment"
+        android:name="hr.bskracic.meddis.ui.therapy.TherapyFragment"
         android:label="@string/menu_therapy"
-        tools:layout="@layout/fragment_therapy" >
-        <action
-            android:id="@+id/action_nav_therapy_to_nav_edit_therapy"
-            app:destination="@id/nav_edit_therapy"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_edit_therapy"
-        android:name="hr.bskracic.meddis.ui.edits.therapy.EditTherapyFragment"
-        android:label="Uredi Terapiju"
-        tools:layout="@layout/fragment_edit_therapy"
-        />
+        tools:layout="@layout/fragment_therapy" />
 
     <fragment
         android:id="@+id/nav_medication"
-        android:name="hr.bskracic.meddis.ui.medication.MedicationListFragment"
+        android:name="hr.bskracic.meddis.ui.medication.MedicationFragment"
         android:label="@string/menu_medication"
         tools:layout="@layout/fragment_medication" />
 
