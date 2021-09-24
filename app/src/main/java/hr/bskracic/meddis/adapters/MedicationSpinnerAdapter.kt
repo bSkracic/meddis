@@ -23,7 +23,7 @@ class MedicationSpinnerAdapter(context: Context, val medications: List<Medicatio
         val medication = getItem(position)
 
         val view = LayoutInflater.from(context).inflate(R.layout.spinner_item_medication, parent, false)
-        view.findViewById<TextView>(R.id.spinner_medication_label).text = medication?.label
+        view.findViewById<TextView>(R.id.spinner_medication_label).text = "${medication?.label} (${medication?.doseUnit})"
 
         return view
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.data.model.TherapyAndMedication
+import hr.bskracic.meddis.data.model.TherapyAndMedicationsWithAlarms
 import hr.bskracic.meddis.repositories.TherapyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,10 @@ class TherapyListViewModel(private val therapyRepository: TherapyRepository) : V
 
     fun getAllWithMedication(): LiveData<List<TherapyAndMedication>> {
         return therapyRepository.getAllWithMedication()
+    }
+
+    fun getAllWithMedicationAndAlarms(): LiveData<List<TherapyAndMedicationsWithAlarms>> {
+        return therapyRepository.getAllWithMedicationAndAlarmsAsync()
     }
 
     fun delete(therapy: Therapy) = CoroutineScope(Dispatchers.IO).launch {

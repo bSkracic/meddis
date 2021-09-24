@@ -23,7 +23,21 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_nav_therapy_to_nav_new_therapy"
+            app:destination="@id/nav_new_therapy"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_therapy"
+        android:name="hr.bskracic.meddis.ui.edits.therapy.NewTherapyFragment"
+        android:label="Nova terapija"
+        tools:layout="@layout/fragment_new_therapy"
+        />
 
     <fragment
         android:id="@+id/nav_edit_therapy"

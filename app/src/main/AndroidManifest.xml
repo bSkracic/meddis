@@ -23,7 +23,7 @@
         </activity>
 
         <receiver
-            android:name="hr.bskracic.meddis.receivers.AlarmBroadcastReceiver"
+            android:name="hr.bskracic.meddis.receivers.AlarmReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
@@ -34,7 +34,7 @@
         </receiver>
 
         <receiver
-            android:name=".receivers.TherapyTakenReceiver"
+            android:name=".receivers.TherapyActionReceiver"
             android:enabled="true"
             android:exported="false">
         </receiver>

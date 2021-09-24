@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.bskracic.meddis.databinding.ActivityMainBinding
 import hr.bskracic.meddis.ui.edits.medication.EditMedicationFragment
+import hr.bskracic.meddis.ui.edits.therapy.NewTherapyFragment
 import hr.bskracic.meddis.ui.edits.therapy.THERAPY_ID
 
 class MainActivity : AppCompatActivity() {
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+        supportActionBar?.title = "Meddis"
         findViewById<BottomNavigationView>(R.id.bottom_menu).visibility = View.VISIBLE
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
@@ -75,8 +77,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openEditTherapy() {
-        val bundle = bundleOf(THERAPY_ID to 0)
-        findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_edit_therapy, bundle)
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController.navigate(R.id.nav_new_therapy)
         findViewById<BottomNavigationView>(R.id.bottom_menu).visibility = View.GONE
     }
 }

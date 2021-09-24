@@ -23,6 +23,11 @@ class TherapyRepository(private val therapyDao: TherapyDao) {
     }
 
     @WorkerThread
+    fun getAllWithMedicationAndAlarmsAsync(): LiveData<List<TherapyAndMedicationsWithAlarms>> {
+        return therapyDao.getAllWithMedicationAndAlarmsAsync()
+    }
+
+    @WorkerThread
     fun getById(therapyId: Int) : LiveData<Therapy> {
         return therapyDao.getById(therapyId)
     }
@@ -35,6 +40,16 @@ class TherapyRepository(private val therapyDao: TherapyDao) {
     @WorkerThread
     fun getByIdWithMedicationSync(therapyId: Int): TherapyAndMedication {
         return therapyDao.getByIdWithMedicationSync(therapyId)
+    }
+
+    @WorkerThread
+    fun getAllAndMedicationWithAlarms(): List<TherapyAndMedicationsWithAlarms> {
+        return therapyDao.getAllWithMedicationAndAlarms()
+    }
+
+    @WorkerThread
+    fun getByIdWithMedicationAndAlarms(therapyId: Int): LiveData<TherapyAndMedicationsWithAlarms> {
+        return therapyDao.getByIdWithMedicationAndAlarms(therapyId)
     }
 
     @WorkerThread

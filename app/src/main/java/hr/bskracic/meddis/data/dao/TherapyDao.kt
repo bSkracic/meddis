@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.data.model.TherapyAndMedication
+import hr.bskracic.meddis.data.model.TherapyAndMedicationsWithAlarms
 
 @Dao
 interface TherapyDao {
@@ -13,6 +14,14 @@ interface TherapyDao {
     @Transaction
     @Query("SELECT * FROM therapies ")
     fun getAllWithMedication(): LiveData<List<TherapyAndMedication>>
+
+    @Transaction
+    @Query("SELECT * FROM therapies")
+    fun getAllWithMedicationAndAlarms(): List<TherapyAndMedicationsWithAlarms>
+
+    @Transaction
+    @Query("SELECT * FROM therapies")
+    fun getAllWithMedicationAndAlarmsAsync(): LiveData<List<TherapyAndMedicationsWithAlarms>>
 
     @Query("SELECT * FROM therapies WHERE id IN (:therapyIds)")
     fun getByIds(therapyIds: IntArray): LiveData<List<Therapy>>
@@ -27,6 +36,10 @@ interface TherapyDao {
     @Transaction
     @Query("SELECT * FROM therapies WHERE therapies.id=:therapyId")
     fun getByIdWithMedication(therapyId: Int): LiveData<TherapyAndMedication>
+
+    @Transaction
+    @Query("SELECT * FROM therapies WHERE therapies.id=:therapyId")
+    fun getByIdWithMedicationAndAlarms(therapyId: Int): LiveData<TherapyAndMedicationsWithAlarms>
 
     @Update
     fun update(vararg therapies: Therapy)

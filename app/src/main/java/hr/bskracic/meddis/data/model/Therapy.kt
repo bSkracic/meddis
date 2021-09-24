@@ -18,6 +18,6 @@ import androidx.room.*
 )
 data class Therapy(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "medication_id") val medicationId: Int,
+    @ColumnInfo(name = "medication_id") var medicationId: Int,
     @ColumnInfo(name = "dosage") val dosage: Int
 )

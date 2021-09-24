@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import hr.bskracic.meddis.utils.NOTIFICATION_ID
 
-class TherapyTakenReceiver : BroadcastReceiver(){
+class TherapyActionReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
 
         if(intent?.action.equals("TherapyTakenAction")) {
@@ -22,6 +22,8 @@ class TherapyTakenReceiver : BroadcastReceiver(){
                     context,
                     NotificationManager::class.java
                 ) as NotificationManager
+
+                // TODO: update medication current amount and send notification accordingly
 
                 alarmId?.let {
                     notificationManager.cancel(it)

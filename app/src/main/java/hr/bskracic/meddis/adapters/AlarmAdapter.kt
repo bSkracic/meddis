@@ -3,6 +3,7 @@ package hr.bskracic.meddis.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.data.model.Alarm
+import hr.bskracic.meddis.data.model.RepeatType
 
 class AlarmAdapter(private val alarmListener: AlarmListener) : ListAdapter<Alarm, AlarmAdapter.AlarmViewHolder>(AlarmComparator()) {
 
@@ -39,6 +41,27 @@ class AlarmAdapter(private val alarmListener: AlarmListener) : ListAdapter<Alarm
 
             deleteImageView.setOnClickListener {
                 alarmListener.onDeleteClicked(alarm)
+            }
+
+            repeatTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    var engName = ""
+                    when(repeatTypeSpinner.selectedItem as String) {
+                        "Dnevno" -> engName = "DAILY"
+                        "Tjedno" -> engName = "WEEKLY"
+                    }
+                    alarm.repeatType = RepeatType.valueOf(engName)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+
             }
         }
 

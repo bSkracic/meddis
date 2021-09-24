@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import hr.bskracic.meddis.MainActivity
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.data.model.TherapyAndMedication
-import hr.bskracic.meddis.receivers.TherapyTakenReceiver
+import hr.bskracic.meddis.receivers.TherapyActionReceiver
 
 const val NOTIFICATION_ID = "NOTIFICATION_ID"
 
@@ -30,7 +30,7 @@ fun NotificationManager.sendTherapyNotification(applicationContext: Context, not
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val checkTherapyIntent = Intent(applicationContext, TherapyTakenReceiver::class.java)
+    val checkTherapyIntent = Intent(applicationContext, TherapyActionReceiver::class.java)
     checkTherapyIntent.action = "TherapyTakenAction"
     checkTherapyIntent.putExtra(NOTIFICATION_ID, notificationId)
     val checkTherapyPendingIntent = PendingIntent.getBroadcast(
@@ -53,7 +53,6 @@ fun NotificationManager.sendTherapyNotification(applicationContext: Context, not
         .setAutoCancel(true)
         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         .setVibrate(longArrayOf(0, 250, 250, 250))
-        .setOngoing(true)
         .addAction(
             R.drawable.ic_therapy,
             "Uzmi",
