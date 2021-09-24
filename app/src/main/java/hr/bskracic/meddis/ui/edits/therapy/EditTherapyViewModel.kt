@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import hr.bskracic.meddis.data.model.Alarm
-import hr.bskracic.meddis.data.model.Medication
-import hr.bskracic.meddis.data.model.Therapy
-import hr.bskracic.meddis.data.model.TherapyAndMedication
+import hr.bskracic.meddis.data.model.*
 import hr.bskracic.meddis.repositories.AlarmRepository
 import hr.bskracic.meddis.repositories.MedicationRepository
 import hr.bskracic.meddis.repositories.TherapyRepository
@@ -17,12 +14,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class EditTherapyViewModel(private val therapyRepo: TherapyRepository, private val medicationRepo: MedicationRepository, private val alarmRepo: AlarmRepository) : ViewModel(),
+class EditTherapyViewModel(
+    private val therapyRepo: TherapyRepository,
+    private val medicationRepo: MedicationRepository,
+    private val alarmRepo: AlarmRepository
+) : ViewModel(),
     ViewRepo<Therapy> {
 
     val allTherapies: LiveData<List<Therapy>> = therapyRepo.therapies
 
-    fun getAllMedication() : LiveData<List<Medication>> {
+    fun getAllMedication(): LiveData<List<Medication>> {
         return medicationRepo.medications.asLiveData()
     }
 
@@ -42,6 +43,10 @@ class EditTherapyViewModel(private val therapyRepo: TherapyRepository, private v
         return alarmRepo.getByTherapyId(therapyId)
     }
 
+    fun getByIdWithMedicationAndAlarms(therapyId: Int): LiveData<TherapyAndMedicationsWithAlarms> {
+        return therapyRepo.getByIdWithMedicationAndAlarms(therapyId)
+    }
+
     fun insert(alarm: Alarm) = CoroutineScope(Dispatchers.IO).launch {
         alarmRepo.insert(alarm)
     }
@@ -54,15 +59,17 @@ class EditTherapyViewModel(private val therapyRepo: TherapyRepository, private v
         alarmRepo.delete(alarm)
     }
 
-    fun insert(therapy: Therapy, onInserted: (id: Long) -> Unit) = CoroutineScope(Dispatchers.IO).launch {
-        onInserted(therapyRepo.insertWithIdReturn(therapy))
-    }
+    fun insert(therapy: Therapy, onInserted: (id: Long) -> Unit) =
+        CoroutineScope(Dispatchers.IO).launch {
+            onInserted(therapyRepo.insertWithIdReturn(therapy))
+        }
 
-    fun insert(alarm: Alarm, onInserted: (id: Long) -> Unit) = CoroutineScope(Dispatchers.IO).launch {
-        onInserted(alarmRepo.insertWithIdReturn(alarm))
-    }
+    fun insert(alarm: Alarm, onInserted: (id: Long) -> Unit) =
+        CoroutineScope(Dispatchers.IO).launch {
+            onInserted(alarmRepo.insertWithIdReturn(alarm))
+        }
 
-    override fun insert(therapy: Therapy, ) = CoroutineScope(Dispatchers.IO).launch {
+    override fun insert(therapy: Therapy) = CoroutineScope(Dispatchers.IO).launch {
         therapyRepo.insert(therapy)
     }
 
@@ -73,9 +80,14 @@ class EditTherapyViewModel(private val therapyRepo: TherapyRepository, private v
     override fun delete(therapy: Therapy) = CoroutineScope(Dispatchers.IO).launch {
         therapyRepo.delete(therapy)
     }
+
 }
 
-class EditTherapyViewModelFactory(private val therapyRepo: TherapyRepository, private val medicationRepo: MedicationRepository, private val alarmRepo: AlarmRepository): ViewModelProvider.Factory{
+class EditTherapyViewModelFactory(
+    private val therapyRepo: TherapyRepository,
+    private val medicationRepo: MedicationRepository,
+    private val alarmRepo: AlarmRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EditTherapyViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

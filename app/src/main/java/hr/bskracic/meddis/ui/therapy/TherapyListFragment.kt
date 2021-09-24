@@ -1,21 +1,22 @@
 package hr.bskracic.meddis.ui.therapy
 
+import android.app.AlarmManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hr.bskracic.meddis.MeddisApplication
 import hr.bskracic.meddis.R
 import hr.bskracic.meddis.adapters.TherapyAdapter
+import hr.bskracic.meddis.data.model.Alarm
 import hr.bskracic.meddis.data.model.Therapy
 import hr.bskracic.meddis.databinding.FragmentTherapyBinding
-import hr.bskracic.meddis.ui.edits.therapy.THERAPY_ID
+import hr.bskracic.meddis.utils.AlarmUtils
 
 class TherapyListFragment : Fragment() {
 
@@ -43,11 +44,14 @@ class TherapyListFragment : Fragment() {
 
         val adapter = TherapyAdapter(object : TherapyAdapter.TherapyListener {
             override fun onTherapyClicked(therapyId: Int) {
-                val bundle = bundleOf(THERAPY_ID to therapyId)
-                activity?.findNavController(R.id.nav_host_fragment_content_main)?.navigate(R.id.nav_edit_therapy, bundle)
+//                val bundle = bundleOf(THERAPY_ID to therapyId)
+//                activity?.findNavController(R.id.nav_host_fragment_content_main)?.navigate(R.id.nav_edit_therapy, bundle)
             }
 
-            override fun onTherapyRemoveSwipe(therapy: Therapy) {
+            override fun onTherapyRemoveSwipe(therapy: Therapy, alarms: List<Alarm>) {
+                for(alarm in alarms) {
+                    AlarmUtils.removeAlarm(requireContext(), (activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager), alarm)
+                }
                 viewModel.delete(therapy)
             }
         })
@@ -57,11 +61,12 @@ class TherapyListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        viewModel.getAllWithMedication().observe(viewLifecycleOwner, {
+        viewModel.getAllWithMedicationAndAlarms().observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

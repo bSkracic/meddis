@@ -7,13 +7,14 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import hr.bskracic.meddis.data.model.Alarm
-import hr.bskracic.meddis.receivers.AlarmBroadcastReceiver
+import hr.bskracic.meddis.data.model.RepeatType
+import hr.bskracic.meddis.receivers.AlarmReceiver
 import java.util.*
 
 class AlarmUtils {
     companion object {
         fun setAlarm(context: Context, alarmManager: AlarmManager, alarm: Alarm) {
-            val intent = Intent(context, AlarmBroadcastReceiver::class.java)
+            val intent = Intent(context, AlarmReceiver::class.java)
             intent.action = "ReceiverAction"
             intent.putExtra("ID", alarm.therapyId)
             intent.putExtra("REQUEST_CODE", alarm.id)
@@ -24,7 +25,11 @@ class AlarmUtils {
             calendar.set(Calendar.HOUR_OF_DAY, alarm.hours)
             calendar.set(Calendar.MINUTE, alarm.minutes)
 
-            val interval: Long = 1 * 60 * 1000
+            var interval = when(alarm.repeatType){
+                RepeatType.DAILY -> AlarmManager.INTERVAL_DAY
+
+                RepeatType.WEEKLY -> AlarmManager.INTERVAL_DAY * 7
+            }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -49,7 +54,7 @@ class AlarmUtils {
         }
 
         fun removeAlarm(context: Context, alarmManager: AlarmManager, alarm: Alarm) {
-            val intent = Intent(context, AlarmBroadcastReceiver::class.java)
+            val intent = Intent(context, AlarmReceiver::class.java)
 
             // So fucking stupid that I have repeat these steps
             intent.action = "ReceiverAction"

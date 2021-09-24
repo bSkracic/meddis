@@ -21,4 +21,6 @@
 
     <string name="therapy_notification_channel_id">hr.bskracic.notificationChannel.0</string>
     <string name="therapy_notification_channel_name">Terapija</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

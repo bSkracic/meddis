@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="medication"
+            type="hr.bskracic.meddis.data.model.Medication" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.shuhart.stepview.StepView
+                android:id="@+id/step_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_700"
+                android:padding="16dp"
+                app:sv_animationType="Line"
+                app:sv_doneCircleColor="@color/gray"
+                app:sv_doneCircleRadius="12dp"
+                app:sv_doneStepLineColor="@color/white"
+                app:sv_doneStepMarkColor="@color/white"
+                app:sv_nextStepCircleColor="@color/gray"
+                app:sv_nextStepLineColor="@color/purple_700"
+                app:sv_nextTextColor="@color/purple_700"
+                app:sv_selectedCircleColor="@color/white"
+                app:sv_selectedCircleRadius="12dp"
+                app:sv_selectedStepNumberColor="@color/white"
+                app:sv_selectedTextColor="@color/white"
+                app:sv_stepLineWidth="1dp"
+                app:sv_stepNumberTextSize="12sp"
+                app:sv_stepPadding="4dp"
+                app:sv_stepViewStyle="@style/StepView"
+                app:sv_stepsNumber="3" />
+
+            <TextView
+                android:id="@+id/new_therapy_description"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:background="@color/purple_700"
+                android:gravity="center_horizontal"
+                android:paddingTop="25dp"
+                android:text="{description}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/label_font_size"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_therapy_medication_layout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <Spinner
+                android:id="@+id/new_therapy_medication"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_therapy_dosage_layout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/new_therapy_dosage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_horizontal"
+                    android:inputType="number"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textColorHighlight="@color/purple_700" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/new_therapy_dose_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:text='@{medication.doseUnit}'
+                android:textSize="@dimen/normal_font_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_therapy_alarm_layout"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/new_therapy_alarm_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Novi podsjetnik"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/white"
+                app:icon="@drawable/ic_alarm_add"
+                app:iconGravity="textStart"
+                app:iconTint="#00CC00" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/new_therapy_alarms"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="10dp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_therapy_alarm_next"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:text="Nastavi"
+            android:textColor="@color/white"
+            app:cornerRadius="10dp"
+            app:iconTint="@color/white"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textStart" />
+
+    </LinearLayout>
+
+</layout>

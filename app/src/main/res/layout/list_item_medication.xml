@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     android:id="@+id/medication_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="120dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +12,7 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:paddingLeft="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -23,10 +24,10 @@
             android:src="@drawable/ic_medication" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/medication_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10sp"
             android:text="{label}"
             android:textStyle="bold"
             android:textSize="@dimen/card_label_font_size" />
@@ -35,8 +36,6 @@
             android:id="@+id/medication_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="10sp"
             android:text="{curr}/{max} {doseUnit}"
             android:textSize="@dimen/card_font_size" />
 

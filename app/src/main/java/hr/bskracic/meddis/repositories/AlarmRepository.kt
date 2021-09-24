@@ -15,8 +15,8 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
 
     @WorkerThread
     @Suppress("RedundantSuspendModifier")
-    suspend fun insert(alarm: Alarm) {
-        return alarmDao.insert(alarm)
+    suspend fun insert(vararg alarm: Alarm) {
+        return alarmDao.insert(*alarm)
     }
 
     @WorkerThread

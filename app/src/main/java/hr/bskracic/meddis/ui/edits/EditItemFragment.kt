@@ -46,8 +46,6 @@ abstract class EditItemFragment<T>(@LayoutRes contentLayoutRes: Int) : Fragment(
             true
         }
 
-        activity
-
         // If user is creating new item, insert it, otherwise update it
         saveButton?.setOnClickListener {
             item = updateItemFromView()

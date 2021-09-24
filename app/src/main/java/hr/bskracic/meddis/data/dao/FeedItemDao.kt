@@ -13,6 +13,10 @@ interface FeedItemDao {
     fun getAll(): LiveData<FeedItem>
 
     @Transaction
+    @Query("SELECT * FROM feeditems")
+    fun getAllWithAll(): LiveData<List<FeedItemWithTherapyAndAlarms>>
+
+    @Transaction
     @Query("SELECT * FROM feeditems WHERE feedItems.is_checked=:isChecked")
     fun getByCheckedWithAll(isChecked: Boolean): LiveData<List<FeedItemWithTherapyAndAlarms>>
 

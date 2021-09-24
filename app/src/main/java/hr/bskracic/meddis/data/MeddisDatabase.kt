@@ -31,20 +31,13 @@ abstract class MeddisDatabase : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     val medicationDao = database.medicationDao()
-                    val therapyDao = database.therapyDao()
-                    val alarmDao = database.alarmDao()
 
                     medicationDao.deleteAll()
 
                     medicationDao.insert(
-                        Medication(0, "lijek 1", "novi lijek", 10, 10, "tableta"),
-                        Medication(0, "lijek 2", "stari lijek", 100, 100, "tableta")
+                        Medication(0, "Jardiance", "novi lijek", 10, 10, "tableta"),
+                        Medication(0, "Emanera", "stari lijek", 100, 100, "tableta")
                         )
-
-                    therapyDao.insert(
-                        Therapy(0, 1, 1),
-                        Therapy(0, 2, 1)
-                    )
 
                 }
             }

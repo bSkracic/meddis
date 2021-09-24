@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.edits.therapy.EditTherapyFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textStyle="bold"
-        android:text="Medikacija"/>
+        android:text="Medikacija"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:background="@color/white"
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Lijek:"
-            android:textSize="@dimen/normal_font_size"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
+            android:text="Lijek:"
             android:textAlignment="textEnd"
+            android:textColor="@color/black"
+            android:textSize="@dimen/normal_font_size"
             tools:ignore="RtlCompat" />
 
         <Spinner
@@ -39,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
@@ -47,32 +46,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textStyle="bold"
-        android:text="Doza"/>
+        android:text="Doza"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/edit_therapy_dose_layout"
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_therapy_dosage"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:gravity="center_horizontal"
             android:inputType="number"
             android:text="1"
-            android:gravity="center_horizontal" />
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/edit_therapy_dose_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="{dose_unit}" />
+            android:text='@{medication.doseUnit}' />
 
     </LinearLayout>
 
@@ -80,8 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textStyle="bold"
-        android:text="Podsjetnici"/>
+        android:text="Podsjetnici"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/edit_therapy_alarm_layout"
@@ -94,19 +93,18 @@
             android:id="@+id/edit_therapy_alarm_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/white"
-            android:textColor="@color/black"
-            app:icon="@drawable/ic_alarm_add"
-            app:iconTint="#00CC00"
-            app:iconGravity="textStart"
             android:text="Novi podsjetnik"
-            />
+            android:textColor="@color/black"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/ic_alarm_add"
+            app:iconGravity="textStart"
+            app:iconTint="#00CC00" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/edit_therapy_alarms"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
 
     </LinearLayout>
 
@@ -115,11 +113,11 @@
         android:layout_width="350dp"
         android:layout_height="55dp"
 
-        android:layout_marginTop="100dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
         android:text="@string/save"
+        app:cornerRadius="5dp"
         app:icon="@drawable/ic_save"
-        app:iconGravity="textStart"
-        app:cornerRadius="5dp" />
+        app:iconGravity="textStart" />
 
 </LinearLayout>

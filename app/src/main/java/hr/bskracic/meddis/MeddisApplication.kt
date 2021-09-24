@@ -5,18 +5,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.LifecycleOwner
 import hr.bskracic.meddis.data.MeddisDatabase
 import hr.bskracic.meddis.repositories.AlarmRepository
 import hr.bskracic.meddis.repositories.FeedItemRepository
 import hr.bskracic.meddis.repositories.MedicationRepository
 import hr.bskracic.meddis.repositories.TherapyRepository
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class MeddisApplication : Application() {
 

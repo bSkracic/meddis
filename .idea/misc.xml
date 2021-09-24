@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/blue_outline.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/drawable/circular_progress_bar.xml" value="0.275" />
+        <entry key="app/src/main/res/drawable/circular_shape.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/ic_meddis_icon.xml" value="0.36666666666666664" />
@@ -22,6 +24,7 @@
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/fragment_medication.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/fragment_new_medication.xml" value="0.35052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_new_therapy.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_preference.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/fragment_therapy.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/list_item_alarm.xml" value="0.35052083333333334" />
@@ -31,6 +34,7 @@
         <entry key="app/src/main/res/layout/list_item_therapy.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/spinner_item_medication.xml" value="0.35052083333333334" />
+        <entry key="app/src/main/res/layout/stepper_layout.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/menu/main.xml" value="0.35052083333333334" />
       </map>

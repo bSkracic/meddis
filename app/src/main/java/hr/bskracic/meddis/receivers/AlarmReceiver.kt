@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AlarmBroadcastReceiver : BroadcastReceiver() {
+class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent!!.action.equals("android.intent.action.BOOT_COMPLETED")) {
             Log.d("ALARM_CHECK", "BOOT_COMPLETED")

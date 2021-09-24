@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 class FeedViewModel(private val feedItemRepo: FeedItemRepository) : ViewModel() {
     val allFeedItemsChecked = feedItemRepo.getByCheckedWithAll(true)
     val allFeedItemsUnchecked = feedItemRepo.getByCheckedWithAll(false)
+    val allFeedItems = feedItemRepo.getAllWithAll()
 
     fun update(feedItem: FeedItem) = CoroutineScope(Dispatchers.IO).launch {
         feedItemRepo.update(feedItem)

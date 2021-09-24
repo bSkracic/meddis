@@ -17,6 +17,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:paddingLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -29,25 +30,32 @@
                 android:src="@drawable/ic_therapy" />
 
             <TextView
-                android:id="@+id/therapy_medication_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="10sp"
-                android:paddingLeft="10sp"
-                android:text="{medication_label}"
-                android:textSize="@dimen/card_label_font_size"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/therapy_dosage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10sp"
                 android:text="{dosage} {dose_unit}"
-                android:textSize="@dimen/card_font_size"
+                android:textColor="@color/black"
+                android:textSize="@dimen/card_label_font_size"
                 app:layout_constraintHorizontal_bias="0.14"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/drug_label" />
+
+            <TextView
+                android:id="@+id/therapy_medication_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="{medication_label}"
+                android:textSize="@dimen/label_font_size"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/therapy_alarms"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8:00"
+                android:textSize="@dimen/normal_font_size"/>
 
         </LinearLayout>
 
@@ -59,8 +67,8 @@
             android:layout_alignParentRight="true"
             android:backgroundTint="@color/red"
             app:icon="@drawable/ic_delete"
-            app:iconSize="35dp"
-            app:iconGravity="end"/>
+            app:iconGravity="end"
+            app:iconSize="35dp" />
 
     </RelativeLayout>
 

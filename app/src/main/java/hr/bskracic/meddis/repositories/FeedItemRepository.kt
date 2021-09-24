@@ -11,6 +11,11 @@ class FeedItemRepository(private val feedItemDao: FeedItemDao) {
     val feedItems = feedItemDao.getAll()
 
     @WorkerThread
+    fun getAllWithAll(): LiveData<List<FeedItemWithTherapyAndAlarms>> {
+        return feedItemDao.getAllWithAll()
+    }
+
+    @WorkerThread
     fun getByChecked(isChecked: Boolean): LiveData<List<FeedItem>> {
         return feedItemDao.getByChecked(isChecked)
     }
